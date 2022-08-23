@@ -5,8 +5,8 @@
 <%= form_with url: tasks_path, method: :get, local: true do |form| %>
   <div>
   タスク名    <%= form.text_field :name_search, placeholder: "検索…"%>
-  ステータス    <%= form.select :search,[["未着手", "未着手"], ["着手中", "着手中"], ["完了", "完了"]], include_blank: "" %>
-  優先度    <%= form.select :search, Task.priorities.keys, include_blank: "" %>
+  ステータス    <%= form.select :status_search,[["未着手", "未着手"], ["着手中", "着手中"], ["完了", "完了"]], include_blank: "" %>
+  優先度    <%= form.select :priority_search, Task.priorities.keys, include_blank: "" %>
   <%= form.submit '検索', name: nil %>
   </div><br>
 <% end %>

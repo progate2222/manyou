@@ -8,7 +8,16 @@ class TasksController < ApplicationController
   # GET /tasks or /tasks.json
   def index
     @tasks = Task.all.page(params[:page]).order(params[:sort]).per(5)
-    @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%") if params[:name_search].present?
+
+    if params[:name_search].present? && params[:status_search].present?
+      @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%").where(status: params[:status_search])
+    elsif params[:name_search].present?
+      @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%")
+    elsif params[:status_search].present?
+      @tasks = @tasks.where(status: params[:status_search])
+    end
+
+    # @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%") if params[:name_search].present?
   end
 
   # GET /tasks/1 or /tasks/1.json

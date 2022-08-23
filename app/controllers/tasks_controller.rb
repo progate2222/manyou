@@ -1,9 +1,14 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
 
+  def top
+    @tasks = Task.page(params[:page]).per(5)
+  end
+
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all.order(created_at: :desc)
+    @tasks = Task.all.page(params[:page]).order(params[:sort]).per(5)
+    @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%") if params[:name_search].present?
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -68,6 +73,6 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:name, :detail)
+      params.require(:task).permit(:name, :detail, :deadline, :status, :priority)
     end
 end

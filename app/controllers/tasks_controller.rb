@@ -3,7 +3,30 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all.order(created_at: :desc)
+    @tasks = Task.all.created_desc(params[:page])
+    # @tasks = Task.all.created_desc(params[:page])
+    # @tasks = Task.all.page(params[:page]).order(created_at: :desc).per(5)
+    # @tasks = Task.all.page(params[:page]).order(params[:sort]).per(5)
+
+    @tasks = Task.all.deadline_desc(params[:page]) if params[:sort_expired] == "true"
+      # @tasks = Task.all.deadline_desc(params[:page])
+      # @tasks = Task.all.page(params[:page]).order(deadline: :desc).per(5)
+
+    @tasks = Task.all.priority_asc(params[:page]) if params[:sort_priority] == "true"
+
+    if params[:name_search].present? && params[:status_search].present?
+      @tasks = @tasks.name_search(params[:name_search]).status_search(params[:status_search])
+      # @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%").where(status: params[:status_search])
+    elsif params[:name_search].present?
+      @tasks = @tasks.name_search(params[:name_search])
+      # @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%")
+    elsif params[:status_search].present?
+      @tasks = @tasks.status_search(params[:status_search])
+    end
+
+    # @tasks = Task.name_status_search(params[:name_search], params[:status_search[]).name_search(params[:name_search])]).status_search(params[:status_search])
+
+
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -68,6 +91,6 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:name, :detail)
+      params.require(:task).permit(:name, :detail, :deadline, :status, :priority)
     end
 end

@@ -13,3 +13,52 @@
  *= require_tree .
  *= require_self
  */
+
+.new {
+    width: 120px;     /* 横幅 */
+    background-color: royalblue;
+    margin: 0.1em;  /* 外側の余白 */
+    text-decoration: none; /* 下線を消す */
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+.new a{
+    color: white;
+}
+
+.new a:hover {
+	color: #f2f2f2;
+}
+
+header {
+    background-color: rgb(223, 223, 223);
+    height: 50px;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+ul {
+    list-style:none;
+}
+div {
+    padding: 0 30px;
+}
+.header__flex {
+    display: flex;
+    height:60px;
+    align-items: center;
+}
+.header__flex nav {
+    margin-left: auto;
+}
+.header__flex ul {
+    display: flex;
+}
+.header__flex ul li {
+    margin-left: 20px;
+}

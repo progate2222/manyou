@@ -17,6 +17,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 4.0'
   gem 'factory_bot_rails'
   gem 'rexml'
+  gem 'pry-rails'
 end
 
 group :development do
@@ -32,4 +33,8 @@ group :test do
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'kaminari'
+gem 'bootstrap', '~> 4.4.1'
+gem 'jquery-rails'
+
 

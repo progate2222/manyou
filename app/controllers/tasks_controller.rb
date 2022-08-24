@@ -1,23 +1,32 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy ]
 
-  def top
-    @tasks = Task.page(params[:page]).per(5)
-  end
-
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all.page(params[:page]).order(params[:sort]).per(5)
+    @tasks = Task.all.created_desc(params[:page])
+    # @tasks = Task.all.created_desc(params[:page])
+    # @tasks = Task.all.page(params[:page]).order(created_at: :desc).per(5)
+    # @tasks = Task.all.page(params[:page]).order(params[:sort]).per(5)
+
+    @tasks = Task.all.deadline_desc(params[:page]) if params[:sort_expired] == "true"
+      # @tasks = Task.all.deadline_desc(params[:page])
+      # @tasks = Task.all.page(params[:page]).order(deadline: :desc).per(5)
+
+    @tasks = Task.all.priority_asc(params[:page]) if params[:sort_priority] == "true"
 
     if params[:name_search].present? && params[:status_search].present?
-      @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%").where(status: params[:status_search])
+      @tasks = @tasks.name_search(params[:name_search]).status_search(params[:status_search])
+      # @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%").where(status: params[:status_search])
     elsif params[:name_search].present?
-      @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%")
+      @tasks = @tasks.name_search(params[:name_search])
+      # @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%")
     elsif params[:status_search].present?
-      @tasks = @tasks.where(status: params[:status_search])
+      @tasks = @tasks.status_search(params[:status_search])
     end
 
-    # @tasks = @tasks.where('name LIKE ?', "%#{params[:name_search]}%") if params[:name_search].present?
+    # @tasks = Task.name_status_search(params[:name_search], params[:status_search[]).name_search(params[:name_search])]).status_search(params[:status_search])
+
+
   end
 
   # GET /tasks/1 or /tasks/1.json

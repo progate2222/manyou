@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>タスク一覧</h1><br>
+<h1>generalタスク一覧</h1><br>
 
 <%= form_with url: tasks_path, method: :get, local: true do |form| %>
   <div>
@@ -10,7 +10,9 @@
   <%= form.submit '検索', name: nil %>
   </div><br>
 <% end %>
-
+<br>
+<div><%= link_to 'タスク登録', new_task_path,class:"new btn" %></div>
+<br>
 <table>
   <thead>
     <tr>
@@ -34,9 +36,9 @@
   </thead>
 
   <tbody>
-    <% @tasks.each do |task| %>
+    <% @tasks.each_with_index do |task, n| %>
       <tr>
-        <td class="task_row"><%= task.name %></td>
+        <td class=task_row id="<%= "task_#{n}" %>"><%= task.name %></td>
         <td><%= task.detail %></td>
         <td><%= task.deadline.to_s(:datetime_jp) %></td>
         <td><%= task.created_at.to_s(:datetime_jp) %></td>
@@ -49,8 +51,11 @@
     <% end %>
   </tbody>
 </table>
+<br>
+<br>
 <%= paginate @tasks %>
 <br>
 
-<%= sort_th('終了期限でソートする','deadline')  %>
+<%= link_to "終了期限でソートする", tasks_path(sort_expired: "true") %>
+<%= link_to "優先順位でソートする", tasks_path(sort_priority: "true") %>
 <%= link_to 'タスク登録', new_task_path %>

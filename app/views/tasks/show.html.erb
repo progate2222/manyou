@@ -1,18 +1,33 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
+  <strong>タスク名:</strong>
   <%= @task.name %>
 </p>
 
 <p>
-  <strong>Detail:</strong>
+  <strong>タスク詳細:</strong>
   <%= @task.detail %>
 </p>
 
 <p>
-  <strong>Deadline:</strong>
+  <strong>終了期限:</strong>
   <%= @task.deadline %>
+</p>
+
+<p>
+  <strong>登録日時:</strong>
+  <%= @task.created_at %>
+</p>
+
+<p>
+  <strong>ステータス:</strong>
+  <%= @task.status %>
+</p>
+
+<p>
+  <strong>優先度:</strong>
+  <%= @task.priority %>
 </p>
 
 <%= link_to 'Edit', edit_task_path(@task) %> |

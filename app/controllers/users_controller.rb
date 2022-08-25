@@ -1,13 +1,16 @@
 class UsersController < ApplicationController
     skip_before_action :login_required, only: [:new, :create]
-    
+    # before_create :admin_false
+
     def new
+        redirect_to tasks_path if current_user.present?
         @user = User.new
     end
 
     def create
         @user = User.new(user_params)
         if @user.save
+            session[:user_id] = @user.id
             redirect_to user_path(@user.id)
         else
             render :new
@@ -16,6 +19,8 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find(params[:id])
+        redirect_to tasks_path if current_user.id != @user.id
+        @tasks = Task.all.includes(:user)
     end
 
     private
@@ -24,4 +29,5 @@ class UsersController < ApplicationController
         params.require(:user).permit(:name, :email, :password,
                                 :password_confirmation)
     end
+
 end

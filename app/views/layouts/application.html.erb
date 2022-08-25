@@ -19,8 +19,8 @@
         <li>Task_Management</li>
         <li><%= link_to 'タスク登録', new_task_path %></li>
         <li><%= link_to 'タスク一覧', tasks_path %></li>
-        <li>アカウント詳細</li>
-        <li>ログアウト</li>
+        <li><%= link_to '管理者ページ', admin_users_path %></li>
+        <li></li>
       </ul>
     </nav>
   </div>
@@ -31,12 +31,13 @@
       <%= content_tag(:div, value, class: "#{key}") %>
     <% end %>
 
-       <% if logged_in? %>
+    <% if logged_in? %>
       <%= link_to "Profile", user_path(current_user.id) %>
       <%= link_to "Logout", session_path(current_user.id), method: :delete %>
+      <p><%= current_user.name %>でログインしています</p>
     <% else %>
       <%= link_to "Sign up", new_user_path %>
-      <%= link_to "Login", sessions_new_path %>
+      <%= link_to "Login", new_session_path %>
     <% end %>
     
     <%= yield %>

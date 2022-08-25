@@ -11,7 +11,7 @@ class User < ApplicationRecord
  
      def admin_exit?
          redirect_to admin_users_path if User.count{|i| i.admin? === true} ==1
-         flash.now[:danger] = '管理者が0人になってしまうため、処理を中断しました'
+        #  flash.now[:danger] = '管理者が0人になってしまうため、処理を中断しました'
      end
 
 end

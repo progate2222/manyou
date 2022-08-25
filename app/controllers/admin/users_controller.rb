@@ -25,11 +25,20 @@ class Admin::UsersController < ApplicationController
 
     def update
         @user = User.find(params[:id])
-        if @user.update(user_params)
-            redirect_to admin_user_path(@user)
-        else
-            render :new
-        end
+        respond_to do |format|
+            if @user.update(user_params)
+              format.html { redirect_to admin_user_path(@user), notice: "ユーザーの更新に成功しました" }
+              format.json { render :show, status: :ok, location: @user }
+            else
+              format.html { render :edit, status: :unprocessable_entity }
+              format.json { render json: @user.errors, status: :unprocessable_entity }
+            end
+          end
+        # if @user.update(user_params)
+        #     redirect_to admin_user_path(@user)
+        # else
+        #     render :new
+        # end
     end
 
     def index
@@ -40,11 +49,18 @@ class Admin::UsersController < ApplicationController
         @user.destroy
 
         respond_to do |format|
-          flash.now[:danger] = '削除が完了しました'
-          format.html { redirect_to admin_users_url, notice: "削除が完了しました" }
-          format.json { head :no_content }
+            if @user.destroy(user_params)
+                format.html { redirect_to admin_users_path, notice: "削除が完了しました" }
+                format.json { render :index, status: :ok, location: @user }
+            else
+                format.html { render :edit, status: :unprocessable_entity }
+                format.json { render json: @user.errors, status: :unprocessable_entity }
+            end
         end
-    end
+        #   flash.now[:danger] = '削除が完了しました'
+        #   format.html { redirect_to admin_users_url, notice: "削除が完了しました" }
+        #   format.json { head :no_content }
+    end 
 
     private
 

@@ -2,6 +2,9 @@ require 'rails_helper'
 RSpec.describe 'ユーザー管理機能', type: :system do
     let!(:user) { FactoryBot.create(:user) }
     let!(:admin_user) {  FactoryBot.create(:admin_user) }
+    let!(:admin_user2) {  FactoryBot.create(:admin_user, email:'user_admin2@mail.com' ) }
+    let!(:user2) { FactoryBot.create(:user, email:'user2@mail.com' ) }
+    let!(:user3 ) { FactoryBot.create(:user, email:'user3@mail.com') }
 
     describe 'ユーザ登録のテスト' do
         context 'サインアップページから情報を入力し' do
@@ -53,7 +56,7 @@ RSpec.describe 'ユーザー管理機能', type: :system do
                 fill_in "session_email", with: 'user_general@mail.com'
                 fill_in "session_password", with: 'user_general'
                 click_on('Log in')
-                user_path(admin_user)
+                visit user_path(admin_user)
                 expect(page).to have_content 'generalタスク一覧'
             end
         end

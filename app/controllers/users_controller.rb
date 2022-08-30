@@ -18,7 +18,9 @@ class UsersController < ApplicationController
 
     def show
         @user = User.find(params[:id])
-        redirect_to tasks_path if current_user.id != @user.id
+        if current_user != @user
+            redirect_to tasks_path
+        end
         @tasks = Task.all.includes(:user)
     end
 

@@ -10,16 +10,16 @@ class User < ApplicationRecord
     before_destroy :admin_exit_before_destroy?
 
     def admin_exit_before_update?
-        if User.where(admin: true).count("true")==1 && self.admin_change[1] == false && self.admin_change[0] == true
-            throw(:abort)
+        if User.all.where(admin: true).count == 1
+            errors.add(:base, '管理者権限を持つアカウントが0件になるため更新できません')
+            throw(:abort) unless self.admin
         end
     end
 
     def admin_exit_before_destroy?
-        if User.where(admin: true).count("true")==1 && self.admin == true
+        if User.all.where(admin: true).count == 1 && self.admin
+            errors.add(:base, '管理者権限を持つアカウントが0件になるため削除できません')
             throw(:abort)
-            render :index
-            flash[:notice] = '管理者が０人になってしまうので削除できません'
         end
     end
 

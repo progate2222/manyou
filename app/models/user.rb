@@ -19,6 +19,7 @@ class User < ApplicationRecord
         if User.where(admin: true).count("true")==1 && self.admin == true
             throw(:abort)
             render :index
+            flash[:notice] = '管理者が０人になってしまうので削除できません'
         end
     end
 

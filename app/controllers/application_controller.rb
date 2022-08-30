@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   def admin_true?
     if current_user.admin != true
         redirect_to tasks_path
+        @user = User.all
         flash[:notice] = '管理者以外はアクセスできません。'
     end
   end

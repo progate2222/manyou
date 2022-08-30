@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2022_08_25_073209) do
   create_table "tasks", force: :cascade do |t|
     t.string "name", null: false
     t.text "detail"
-    t.date "deadline", default: "2022-08-27", null: false
+    t.date "deadline", default: "2022-08-31", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "status", default: "未着手"

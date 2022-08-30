@@ -25,8 +25,6 @@ class TasksController < ApplicationController
     end
 
     # @tasks = Task.name_status_search(params[:name_search], params[:status_search[]).name_search(params[:name_search])]).status_search(params[:status_search])
-
-
   end
 
   # GET /tasks/1 or /tasks/1.json

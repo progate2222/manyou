@@ -19,6 +19,9 @@
         <li>Task_Management</li>
         <li><%= link_to 'タスク登録', new_task_path %></li>
         <li><%= link_to 'タスク一覧', tasks_path %></li>
+        <% if logged_in? %>
+          <li><%= link_to 'マイページ', user_path(current_user) %></li>
+        <% end %>
         <li><%= link_to '管理者ページ', admin_users_path %></li>
         <li></li>
       </ul>

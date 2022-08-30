@@ -1,22 +1,33 @@
 require 'rails_helper'
 RSpec.describe 'タスク管理機能', type: :system do
-  let!(:task1) { FactoryBot.create(:task, name: 'task1', detail:'task1_detail', deadline: '2022-10-31') }
-
-  before do
-    visit tasks_path
-  end
+  let!(:user) { FactoryBot.create(:user) }
+  let!(:task1) { FactoryBot.create(:task, name: 'task1', detail:'task1_detail', deadline: '2022-10-31', user: user) }
 
   describe '詳細表示機能' do
     context '任意のタスク詳細画面に遷移した場合' do
+      before do
+        visit new_session_path
+        fill_in "session_email", with: 'user_general@mail.com'
+        fill_in "session_password", with: 'user_general'
+        click_on('Log in')
+        visit tasks_path
+      end
       it '該当タスクの内容が表示される' do
-       visit tasks_path
-       click_link('詳細')
-       expect(page).to have_content 'task1'
+        visit tasks_path
+        click_link('詳細')
+        expect(page).to have_content 'task1'
       end
     end
- end
+  end
 
   describe '新規作成機能' do
+    before do
+      visit new_session_path
+      fill_in "session_email", with: 'user_general@mail.com'
+      fill_in "session_password", with: 'user_general'
+      click_on('Log in')
+      visit tasks_path
+    end
     context 'タスクを新規登録するとき' do
       it '終了期限も登録できる' do
         visit new_task_path
@@ -40,6 +51,13 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   describe '一覧表示機能' do
+    before do
+      visit new_session_path
+      fill_in "session_email", with: 'user_general@mail.com'
+      fill_in "session_password", with: 'user_general'
+      click_on('Log in')
+      visit tasks_path
+    end
     context '一覧画面に遷移した場合' do
       it '作成済みのタスク一覧が表示される' do
         visit tasks_path
@@ -77,14 +95,16 @@ RSpec.describe 'タスク管理機能', type: :system do
   end
 
   describe '検索機能' do
-    before do
-      FactoryBot.create(:task, name: "walking")
-      FactoryBot.create(:task, name: "shopping")
-      FactoryBot.create(:second_task, name: "play_sports")
-    end
+  let!(:task2) {FactoryBot.create(:task, name: "walking", user: user)}
+  let!(:task3) {FactoryBot.create(:task, name: "shopping", user: user)}
+  let!(:task4) {FactoryBot.create(:second_task, name: "play_sports", user: user)}
 
     context 'タイトルであいまい検索をした場合' do
       it "検索キーワードを含むタスクで絞り込まれる" do
+        visit new_session_path
+        fill_in "session_email", with: 'user_general@mail.com'
+        fill_in "session_password", with: 'user_general'
+        click_on('Log in')
         visit tasks_path
         fill_in "name_search", with: 'walk'
         click_on('検索')
@@ -93,6 +113,10 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context 'ステータス検索をした場合' do
       it "ステータスに完全一致するタスクが絞り込まれる" do
+        visit new_session_path
+        fill_in "session_email", with: 'user_general@mail.com'
+        fill_in "session_password", with: 'user_general'
+        click_on('Log in')
         visit tasks_path
         select "未着手", from: 'status_search'
         click_on('検索')
@@ -101,6 +125,10 @@ RSpec.describe 'タスク管理機能', type: :system do
     end
     context 'タイトルのあいまい検索とステータス検索をした場合' do
       it "検索キーワードをタイトルに含み、かつステータスに完全一致するタスク絞り込まれる" do
+        visit new_session_path
+        fill_in "session_email", with: 'user_general@mail.com'
+        fill_in "session_password", with: 'user_general'
+        click_on('Log in')
         visit tasks_path
         fill_in "name_search", with: 'walk'
         select "未着手", from: 'status_search'

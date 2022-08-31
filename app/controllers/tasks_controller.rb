@@ -3,7 +3,7 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all.created_desc(params[:page])
+    @tasks = current_user.tasks.created_desc(params[:page])
     # @tasks = Task.all.created_desc(params[:page])
     # @tasks = Task.all.page(params[:page]).order(created_at: :desc).per(5)
     # @tasks = Task.all.page(params[:page]).order(params[:sort]).per(5)
@@ -25,8 +25,6 @@ class TasksController < ApplicationController
     end
 
     # @tasks = Task.name_status_search(params[:name_search], params[:status_search[]).name_search(params[:name_search])]).status_search(params[:status_search])
-
-
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -44,7 +42,7 @@ class TasksController < ApplicationController
 
   # POST /tasks or /tasks.json
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.build(task_params)
 
     respond_to do |format|
       if @task.save

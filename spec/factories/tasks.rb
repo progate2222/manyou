@@ -18,4 +18,5 @@ FactoryBot.define do
     status { '着手中' }
     priority{ 2 }
   end
+
 end

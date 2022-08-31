@@ -19,8 +19,11 @@
         <li>Task_Management</li>
         <li><%= link_to 'タスク登録', new_task_path %></li>
         <li><%= link_to 'タスク一覧', tasks_path %></li>
-        <li>アカウント詳細</li>
-        <li>ログアウト</li>
+        <% if logged_in? %>
+          <li><%= link_to 'マイページ', user_path(current_user) %></li>
+        <% end %>
+        <li><%= link_to '管理者ページ', admin_users_path %></li>
+        <li></li>
       </ul>
     </nav>
   </div>
@@ -30,6 +33,16 @@
     <% flash.each do |key, value| %>
       <%= content_tag(:div, value, class: "#{key}") %>
     <% end %>
+
+    <% if logged_in? %>
+      <%= link_to "Profile", user_path(current_user.id) %>
+      <%= link_to "Logout", session_path(current_user.id), method: :delete %>
+      <p><%= current_user.name %>でログインしています</p>
+    <% else %>
+      <%= link_to "Sign up", new_user_path %>
+      <%= link_to "Login", new_session_path %>
+    <% end %>
+    
     <%= yield %>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

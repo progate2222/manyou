@@ -24,6 +24,8 @@ class TasksController < ApplicationController
       @tasks = @tasks.status_search(params[:status_search])
     end
 
+    @tasks = @tasks.joins(:labels).where(labels: { id: params[:label_id] }) if params[:label_id].present?
+
     # @tasks = Task.name_status_search(params[:name_search], params[:status_search[]).name_search(params[:name_search])]).status_search(params[:status_search])
   end
 
@@ -89,6 +91,6 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:name, :detail, :deadline, :status, :priority)
+      params.require(:task).permit(:name, :detail, :deadline, :status, :priority, { label_ids: [] })
     end
 end

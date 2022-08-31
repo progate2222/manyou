@@ -3,6 +3,8 @@ class Task < ApplicationRecord
     validates :detail, presence: true
     enum priority: { "高":0, "中":1, "低":2 }
     belongs_to :user
+    has_many :favorites, dependent: :destroy
+    has_many :labels, through: :favorites
 
     scope :created_desc, -> (params){page(params).order(created_at: :desc).per(5)}
     # def self.created_desc(params)

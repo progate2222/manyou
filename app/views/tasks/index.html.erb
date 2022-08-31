@@ -6,7 +6,7 @@
   <div>
   タスク名    <%= form.text_field :name_search, placeholder: "検索…"%>
   ステータス    <%= form.select :status_search,[["未着手", "未着手"], ["着手中", "着手中"], ["完了", "完了"]], include_blank: "" %>
-  優先度    <%= form.select :priority_search, Task.priorities.keys, include_blank: "" %>
+  ラベル      <%= form.select("label_id", Label.pluck(:title, :id), { include_blank: true }) %>
   <%= form.submit '検索', name: nil %>
   </div><br>
 <% end %>
@@ -49,6 +49,11 @@
         <td><%= link_to '詳細', task %></td>
         <td><%= link_to '編集', edit_task_path(task) %></td>
         <td><%= link_to '削除', task, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+              <% task.labels.each do |label| %>
+                  <%= label.title %>
+              <% end %>
+      </td>
       </tr>
     <% end %>
   </tbody>

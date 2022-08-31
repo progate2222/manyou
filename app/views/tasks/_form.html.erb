@@ -1,4 +1,4 @@
-<%= form_with(model: task) do |form| %>
+<%= form_with(model: task, local: true) do |form| %>
   <% if task.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
@@ -31,10 +31,14 @@
     <%= form.select :status,[["未着手", "未着手"], ["着手中", "着手中"], ["完了", "完了"]], include_blank: "選択して下さい" %>
   </div>
 
-   <div class="field">
+  <div class="field">
     <%= form.label :優先度 %>
     <%= form.select :priority, Task.priorities.keys %>
   </div>
+
+  <div class="field"><label>ラベル
+    <%= form.collection_check_boxes(:label_ids, Label.all, :id, :title) %>
+  </label></div>
 
   <div class="actions">
     <%= form.submit %>

@@ -8,6 +8,11 @@ FactoryBot.define do
     deadline { '2022-08-31' }
     status { '未着手' }
     priority{ 0 }
+
+    after(:build) do |task|
+      label = create(:label)
+      task.task_labels << build(:task_label, task: task, label: label)
+    end
   end
   # 作成するテストデータの名前を「second_task」とします
   # （存在しないクラス名の名前をつける場合、オプションで「このクラスのテストデータにしてください」と指定します）
